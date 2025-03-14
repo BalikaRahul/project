@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Round-Robin Coupon Distribution</h1>
+    </header>
+
+    <section class="container">
+        <h2>Claim Your Coupon</h2>
+        <p id="message">Click the button to claim a coupon.</p>
+        <button id="claim-btn">Claim Coupon</button>
+        <p id="coupon-code"></p>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #0073e6;
+    color: white;
+    padding: 20px;
+}
+
+.container {
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #005bb5;
+}
+
+#coupon-code {
+    font-size: 18px;
+    font-weight: bold;
+    color: green;
+    margin-top: 10px;
+}
+</style>
+<script>
+document.getElementById("claim-btn").addEventListener("click", function () {
+    fetch("/claim-coupon", {
+        method: "POST",
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            document.getElementById("message").textContent = data.error;
+        } else {
+            document.getElementById("coupon-code").textContent = `Your Coupon: ${data.coupon}`;
+            document.getElementById("message").textContent = "Successfully claimed!";
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});
+</script>
+
